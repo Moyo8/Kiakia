@@ -1,8 +1,8 @@
-# Veil: private AI help with sensitive documents
+# Kiakia: private AI help with sensitive documents
 
 **Ask AI about your medical, insurance and legal letters without giving away who you are.**
 
-Veil finds the names, dates, record numbers and addresses in a document **on your device** with Gemini Nano. It swaps them for placeholders like `[PERSON_1]`, and only then lets an AI read it. Answers come back with your details filled in, locally. A live *privacy receipt* shows every AI call, where it ran and exactly what left the device.
+Kiakia finds the names, dates, record numbers and addresses in a document **on your device** with Gemini Nano. It swaps them for placeholders like `[PERSON_1]`, and only then lets an AI read it. Answers come back with your details filled in, locally. A live *privacy receipt* shows every AI call, where it ran and exactly what left the device.
 
 Built for [#BuildHybridAI 2026](https://firebasehybridaihackathon.devpost.com/) with the **Firebase AI Logic hybrid inference SDK** (Web / Chrome).
 
@@ -16,9 +16,9 @@ People hold their most confusing paperwork in their most private documents: lab 
 - Families facing a claim denial or an eviction notice need to know their deadline and their options *today*.
 - Clinics, legal-aid volunteers and caseworkers want AI help but can't send client identifiers to a third-party cloud.
 
-The usual choice is *privacy or capability*. Veil uses hybrid inference to give both.
+The usual choice is *privacy or capability*. Kiakia uses hybrid inference to give both.
 
-## How Veil uses hybrid inference
+## How Kiakia uses hybrid inference
 
 On-device and cloud models each get the job they're best at. This goes further than "cloud as a fallback":
 
@@ -45,13 +45,13 @@ flowchart LR
 | **Offline**, or **Private** mode | Gemini Nano only | `ONLY_ON_DEVICE` | Works with no connection; nothing leaves the device. |
 | **Follow-up questions** | Routed the same way | per question length | Questions are redacted on-device too (known values + patterns). |
 
-Every answer shows a badge from the SDK's `inferenceSource` (*Answered on this device · Gemini Nano* or *Answered by Gemini in the cloud · saw redacted text only*). If the SDK falls back, Veil says so.
+Every answer shows a badge from the SDK's `inferenceSource` (*Answered on this device · Gemini Nano* or *Answered by Gemini in the cloud · saw redacted text only*). If the SDK falls back, Kiakia says so.
 
-### A privacy detail we found in the SDK, and how Veil handles it
+### A privacy detail we found in the SDK, and how Kiakia handles it
 
 In the Web SDK, `InferenceMode.ONLY_ON_DEVICE` is enforced by an on-device adapter. That adapter is only created when the browser exposes `window.LanguageModel`. In browsers **without** the Prompt API (Firefox, Safari, older Chrome), no adapter exists and the request goes to the cloud model. You can see this in `getGenerativeModel` → `chromeAdapterFactory` and `callCloudOrDevice` in `@firebase/ai`.
 
-For most apps that's a reasonable default. For a privacy filter it would upload the raw document. So Veil **fails closed**: [`assertOnDevice()`](src/ai/onDevice.ts) checks `LanguageModel.availability()` itself before every on-device-only call. It also verifies `inferenceSource === 'on_device'` afterwards. If Gemini Nano isn't available, the Find step falls back to pattern detection, never to the cloud.
+For most apps that's a reasonable default. For a privacy filter it would upload the raw document. So Kiakia **fails closed**: [`assertOnDevice()`](src/ai/onDevice.ts) checks `LanguageModel.availability()` itself before every on-device-only call. It also verifies `inferenceSource === 'on_device'` afterwards. If Gemini Nano isn't available, the Find step falls back to pattern detection, never to the cloud.
 
 ## What's in the box
 
@@ -99,7 +99,7 @@ You need Node.js 20+, a Firebase project and desktop Chrome.
    npx -y firebase-tools@latest init ailogic
    ```
 4. **App Check**: console → App Check → register the web app with **reCAPTCHA Enterprise**. Put the site key in `VITE_RECAPTCHA_ENTERPRISE_SITE_KEY` and allow your domains (`localhost` and `<project>.web.app`). Turn on enforcement for Firebase AI Logic.
-5. **Debug token for local development**: run the app once (step 3 below). Copy the `App Check debug token` printed in the browser console, then add it under App Check → Apps → ⋮ → *Manage debug tokens*. To keep it stable, store it in `VITE_APPCHECK_DEBUG_TOKEN` in `.env.local`. **Never commit it.**
+5. **Local development**: with `localhost` on the reCAPTCHA key's domain list, `npm run dev` uses reCAPTCHA Enterprise like production does. For environments where reCAPTCHA can't run (CI, a headless browser), create a debug token under App Check → Apps → ⋮ → *Manage debug tokens* and put it in `VITE_APPCHECK_DEBUG_TOKEN` in `.env.local`. **Never commit it.**
 6. **Remote Config** (optional; defaults are built in):
    ```bash
    npx -y firebase-tools@latest deploy --only remoteconfig
@@ -110,9 +110,9 @@ You need Node.js 20+, a Firebase project and desktop Chrome.
 On-device inference needs desktop Chrome 139+ (Windows, macOS or Linux) with about 22 GB of free disk. Per Chrome's built-in AI docs, it also needs a GPU with more than 4 GB of VRAM, or 16 GB of RAM and 4+ CPU cores.
 
 1. Open `chrome://flags/#prompt-api-for-gemini-nano` and set it to **Enabled**. If `#prompt-api-for-gemini-nano-multimodal-input` exists, enable it too. Relaunch Chrome.
-2. In Veil, click **Download** in the status bar. Chrome only allows the download after a click. Progress shows in the chip, and `chrome://on-device-internals` shows the model state.
+2. In Kiakia, click **Download** in the status bar. Chrome only allows the download after a click. Progress shows in the chip, and `chrome://on-device-internals` shows the model state.
 
-Without Gemini Nano, Veil still works: detection uses patterns, answers come from the cloud on redacted text, and the UI explains why.
+Without Gemini Nano, Kiakia still works: detection uses patterns, answers come from the cloud on redacted text, and the UI explains why.
 
 ### 3. Run
 
@@ -148,10 +148,10 @@ src/
 
 ## Limitations
 
-- Detection can miss things, so Veil asks you to review the highlights before anything is sent. Context can still identify someone ("the only cardiologist in a small town"), and no automatic redaction is perfect.
+- Detection can miss things, so Kiakia asks you to review the highlights before anything is sent. Context can still identify someone ("the only cardiologist in a small town"), and no automatic redaction is perfect.
 - Gemini Nano has a small context window. Long documents are scanned in slices, and Auto routing sends long *redacted* documents to the cloud.
 - On-device inference needs desktop Chrome with Gemini Nano. Other browsers get the pattern shield and cloud answers.
-- Veil gives general information, not medical, legal or financial advice.
+- Kiakia gives general information, not medical, legal or financial advice.
 
 ## License
 

@@ -57,12 +57,14 @@ function init(): FirebaseApp {
   if (!isConfigured) throw new Error('Firebase is not configured. See README → Setup.');
   app = initializeApp(firebaseConfig);
 
-  // App Check is required by Firebase AI Logic. In development the debug provider is
-  // used: a token comes from .env.local, or the SDK prints one to the console.
-  if (env.DEV) {
-    self.FIREBASE_APPCHECK_DEBUG_TOKEN = env.VITE_APPCHECK_DEBUG_TOKEN || true;
-  }
+  // App Check is required by Firebase AI Logic. reCAPTCHA Enterprise attests real
+  // browsers (add localhost to the key's domains to use it in development). The debug
+  // provider is used in development when a debug token is set, or when there's no key.
   const siteKey = env.VITE_RECAPTCHA_ENTERPRISE_SITE_KEY;
+  const debugToken = env.VITE_APPCHECK_DEBUG_TOKEN;
+  if (env.DEV && (debugToken || !siteKey)) {
+    self.FIREBASE_APPCHECK_DEBUG_TOKEN = debugToken || true;
+  }
   if (siteKey || env.DEV) {
     initializeAppCheck(app, {
       // Without a site key (local dev only), the debug token is the only attestation;
@@ -76,7 +78,7 @@ function init(): FirebaseApp {
     });
     appCheckReady = true;
   } else {
-    console.warn('[Veil] No reCAPTCHA Enterprise site key: App Check is off, cloud calls will be rejected.');
+    console.warn('[Kiakia] No reCAPTCHA Enterprise site key: App Check is off, cloud calls will be rejected.');
   }
   return app;
 }
@@ -122,7 +124,7 @@ export async function loadTunables(): Promise<Tunables> {
         getValue(remoteConfig, 'shield_chunk_chars').asNumber() || DEFAULTS.shieldChunkChars,
     };
   } catch (e) {
-    console.info('[Veil] Remote Config unavailable, using defaults.', e);
+    console.info('[Kiakia] Remote Config unavailable, using defaults.', e);
   }
   return tunables;
 }

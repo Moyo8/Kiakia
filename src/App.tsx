@@ -195,7 +195,7 @@ export default function App() {
             <Icon name="shield" size={20} />
           </div>
           <div>
-            <h1>Veil</h1>
+            <h1>Kiakia</h1>
             <p>Private help with sensitive documents</p>
           </div>
         </div>
@@ -222,7 +222,7 @@ export default function App() {
         <div className="hero">
           <h2>Understand medical, insurance and legal letters with AI, without giving away who you are.</h2>
           <p>
-            Veil finds names, dates, ID numbers and addresses <strong>on your device</strong>, swaps them for
+            Kiakia finds names, dates, ID numbers and addresses <strong>on your device</strong>, swaps them for
             placeholders, and only then asks the AI. Answers come back with your details filled in, locally.
           </p>
         </div>
@@ -305,11 +305,11 @@ export default function App() {
         <aside className="side">
           <Receipt entries={ledger} />
           <section className="card how">
-            <h2>How Veil uses hybrid AI</h2>
+            <h2>How Kiakia uses hybrid AI</h2>
             <ol>
               <li>
                 <Icon name="chip" size={14} /> <strong>Find</strong>: Gemini Nano scans the raw document{' '}
-                <em>on-device only</em>. If it isn’t available, Veil falls back to pattern detection, never to
+                <em>on-device only</em>. If it isn’t available, Kiakia falls back to pattern detection, never to
                 the cloud.
               </li>
               <li>
@@ -329,7 +329,7 @@ export default function App() {
         </aside>
       </main>
       <footer className="foot">
-        Veil gives general information, not medical, legal or financial advice. Built with Firebase AI Logic hybrid
+        Kiakia gives general information, not medical, legal or financial advice. Built with Firebase AI Logic hybrid
         inference.
       </footer>
     </div>

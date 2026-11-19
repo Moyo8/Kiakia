@@ -117,7 +117,7 @@ async function shieldChunk(chunk: string): Promise<Array<{ text: string; type: E
 /**
  * Find identifiers in the raw document. Patterns always run; Gemini Nano adds names,
  * addresses and facilities that patterns miss. The raw text never leaves the device:
- * if Gemini Nano isn't available, Veil falls back to patterns only, never to the cloud.
+ * if Gemini Nano isn't available, Kiakia falls back to patterns only, never to the cloud.
  */
 export async function runShield(
   text: string,
@@ -140,7 +140,7 @@ export async function runShield(
       opts.onProgress?.(chunks.length, chunks.length);
       engine = 'nano';
     } catch (e) {
-      console.warn('[Veil] On-device shield failed; using patterns only.', e);
+      console.warn('[Kiakia] On-device shield failed; using patterns only.', e);
       note =
         e instanceof PrivacyGuardError
           ? 'Gemini Nano wasn’t available, so only pattern detection ran. Your document still never left this device. Review the highlights carefully.'

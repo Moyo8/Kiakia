@@ -1,5 +1,5 @@
 {
-  "name": "veil",
+  "name": "kiakia",
   "version": "0.1.0",
   "description": "Ask AI about your most sensitive documents without giving away who you are. Hybrid on-device + cloud AI with Firebase AI Logic.",
   "scripts": {

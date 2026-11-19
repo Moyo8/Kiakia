@@ -1,12 +1,12 @@
 /**
- * Gemini Nano (Chrome's built-in Prompt API) availability, plus Veil's fail-closed
+ * Gemini Nano (Chrome's built-in Prompt API) availability, plus Kiakia's fail-closed
  * privacy guard.
  *
  * Why the guard exists: in the Firebase AI Logic Web SDK, a model created with
  * InferenceMode.ONLY_ON_DEVICE only enforces "on-device" when the browser exposes
  * `window.LanguageModel`. In browsers without it (Firefox, Safari, older Chrome) no
  * on-device adapter is created and the request is sent to the cloud model instead.
- * For a privacy filter that would leak the raw document, so Veil checks availability
+ * For a privacy filter that would leak the raw document, so Kiakia checks availability
  * itself before every on-device-only call and refuses to proceed otherwise.
  */
 
