@@ -1,0 +1,19 @@
+{
+  "parameters": {
+    "cloud_model": {
+      "defaultValue": { "value": "gemini-3.5-flash-lite" },
+      "description": "Cloud Gemini model used for redacted analysis. Change it here to upgrade without a new build.",
+      "valueType": "STRING"
+    },
+    "auto_on_device_max_chars": {
+      "defaultValue": { "value": "2500" },
+      "description": "Auto routing: redacted prompts up to this many characters are answered on-device first (Gemini Nano).",
+      "valueType": "NUMBER"
+    },
+    "shield_chunk_chars": {
+      "defaultValue": { "value": "2400" },
+      "description": "Characters per slice when Gemini Nano scans a document for private details.",
+      "valueType": "NUMBER"
+    }
+  }
+}
